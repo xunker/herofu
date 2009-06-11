@@ -1,10 +1,9 @@
-# common settings for each database
 common: &common
   adapter: mysql
-  username: mnielsen
+  username: root
   password: 
   host: localhost
-  database: <%= SERVER_NAME %>
+  database: <%= APPNAME %>
 
 test:
   <<: *common
