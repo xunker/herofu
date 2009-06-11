@@ -62,7 +62,7 @@ get '/admin/delete/:id' do
 end
 
 post '/admin' do
-  if credentials_pass?
+  if credentials_pass? && params[:uploaded_data].size > 0
     filename = params[:filename].size>0 ? params[:filename] : params[:uploaded_data][:filename]
     filename = '/' + filename unless filename.split[0] == '/'
     StoredFile.create(
@@ -107,7 +107,7 @@ __END__
   <ul><%= @files.size %> files are stored.
     <% @files.each do |file| %>
     <li>
-      <a href="<%= file.filename %>" target="_blank"><%= file.filename %></a> --- <i><a href="/admin/edit/<%= file.id %>?<%= url_creds %>">edit</a></i> --- <i><a href="/admin/delete/<%= file.id %>?<%= url_creds %>">delete</a></i><br />
+      <a href="<%= file.filename %>" target="_blank"><%= file.filename %></a> (<%= file.content.size > 1024 ? "#{(file.content.size/1024).to_i} kbytes" : "#{file.content.size} bytes" %>) --- <i><a href="/admin/edit/<%= file.id %>?<%= url_creds %>">edit</a></i> --- <i><a href="/admin/delete/<%= file.id %>?<%= url_creds %>">delete</a></i><br />
     </li>
     <% end %>
   </ul>
