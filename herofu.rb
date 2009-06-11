@@ -12,7 +12,7 @@ class CreateStoredFiles < ActiveRecord::Migration
     ActiveRecord::Base.logger = Logger.new(STDOUT)
     create_table :stored_files do |t|
       t.column :filename, :string, :null => false
-      t.column :content, :longblob, :null => false
+      t.column :content, :binary, :limit => 64.megabyte, :null => false
       t.column :mine_type, :string
       t.timestamps
     end
