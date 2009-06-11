@@ -13,7 +13,7 @@ class CreateStoredFiles < ActiveRecord::Migration
     create_table :stored_files do |t|
       t.column :filename, :string, :null => false
       t.column :content, :binary, :null => false
-      t.column :mine_type, :string
+      t.column :mime_type, :string
       t.timestamps
     end
     add_index :stored_files, :filename, :unique => true
