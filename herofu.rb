@@ -1,5 +1,35 @@
+# HEROFU QUICK START
+#
+# 1) Git Clone this as a master branch
+# 2) Change the USERNAME and PASSWORD below
+# 3) Make sure you have the 'heroku' gem installed (sudo gem install heroku)
+# 4) Make sure you have a Heroku account and have set up the heroku gem with 'heroku credentials'
+# 5) in the cloned directory, make a new heroku app "heroku create <app name>"
+
+
+# CHANGE THESE!
+SERVER_NAME='herofu'
 USERNAME='admin'
 PASSWORD='sh1sh2'
+
+DATABASE = {
+  'development' => {
+    :adapter => 'mysql',
+    :username => 'root',
+    :password => '',
+    :host => 'localhost',
+    :database => 'herofu'
+  },
+  'production' => {
+    :adapter => 'postgres',
+    :username => 'root',
+    :password => '',
+    :host => 'localhost',
+    :database => 'herofu'
+  }
+}
+
+# EVERYTHING ELSE *SHOULD* BE FINE
 
 %w[rubygems sinatra activerecord yaml erb].each { |r| require r }
 
@@ -25,10 +55,11 @@ class CreateStoredFiles < ActiveRecord::Migration
 end
 
 def use_main_app_database
-  db = File.dirname(__FILE__) + "/config/database.yml"
-  database_config = YAML.load(ERB.new(IO.read(db)).result)
+  # db = File.dirname(__FILE__) + "/config/database.yml"
+  # database_config = YAML.load(ERB.new(IO.read(db)).result)
   env = ENV['RAILS_ENV'] == 'production' ? 'production' : 'development'
-  (database_config[env]).symbolize_keys
+  # (database_config[env]).symbolize_keys
+  DATABASE[env]
 end
 
 def check_database
@@ -37,9 +68,6 @@ def check_database
     file = StoredFile.find(:first)
   rescue # rescue is overly broad to work on postgres (heroku) and local (mysql)
     # create the table
-    # ActiveRecord::Base.connection.execute(
-    #   "CREATE TABLE stored_files (id INT NOT NULL AUTO_INCREMENT, filename varchar(255) NOT NULL, content longblob NOT NULL, mime_type varchar(32), created_at datetime, updated_at datetime, PRIMARY KEY (id), UNIQUE (filename));"
-    # )
     CreateStoredFiles.up
   end
 end
