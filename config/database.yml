@@ -4,16 +4,14 @@ common: &common
   username: mnielsen
   password: 
   host: localhost
+  database: <%= SERVER_NAME %>
 
 test:
   <<: *common
-  database: herofu
 
 development:
   <<: *common
-  database: herofu
 
 production:
   <<: *common
   adapter: postgres
-  database: herofu

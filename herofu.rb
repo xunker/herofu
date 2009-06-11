@@ -8,26 +8,9 @@
 
 
 # CHANGE THESE!
-SERVER_NAME='herofu'
+SERVER_NAME='herofu' # also name of DB
 USERNAME='admin'
 PASSWORD='sh1sh2'
-
-DATABASE = {
-  'development' => {
-    :adapter => 'mysql',
-    :username => 'mnielsen',
-    :password => nil,
-    :host => 'localhost',
-    :database => 'herofu'
-  },
-  'production' => {
-    :adapter => 'postgres',
-    :username => 'mnielsen',
-    :password => nil,
-    :host => 'localhost',
-    :database => 'herofu'
-  }
-}
 
 # EVERYTHING ELSE *SHOULD* BE FINE
 
@@ -55,11 +38,10 @@ class CreateStoredFiles < ActiveRecord::Migration
 end
 
 def use_main_app_database
-  # db = File.dirname(__FILE__) + "/config/database.yml"
-  # database_config = YAML.load(ERB.new(IO.read(db)).result)
+  db = File.dirname(__FILE__) + "/config/database.yml"
+  database_config = YAML.load(ERB.new(IO.read(db)).result)
   env = ENV['RAILS_ENV'] == 'production' ? 'production' : 'development'
-  # (database_config[env]).symbolize_keys
-  DATABASE[env]
+  (database_config[env]).symbolize_keys
 end
 
 def check_database
