@@ -2,10 +2,11 @@
 #
 # 1) Git Clone this as a master branch
 # 2) Change the USERNAME, PASSWORD and APPNAME below
-# 3) Make sure you have the 'heroku' gem installed (sudo gem install heroku)
-# 4) In the cloned directory, make a new heroku app "heroku create <APPNAME>"
-# 5) Deploy app to heroku with "git push heroku master"
-# 6) Get thee to http://APPNAME.heroku.com/admin to see your handywork
+# 3) commit your updates: git commit -a -m "initial setup"
+# 4) Make sure you have the 'heroku' gem installed (sudo gem install heroku)
+# 5) In the cloned directory, make a new heroku app "heroku create <APPNAME>"
+# 6) Deploy app to heroku with "git push heroku master"
+# 7) Get thee to http://APPNAME.heroku.com/admin to see your handywork
 #
 # More info at http://herofu.heroku.com/
 

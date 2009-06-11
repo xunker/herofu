@@ -7,51 +7,71 @@ file server for Heroku's zero-provisioning app hosting server.  Files are
 stored in database and are served in expected URL formats like
 "http://appname.heroku.com/files/file.html".
 
-Even though Herofu is designed for Heroku, it is nothing more than a rack-deployed sinatra app and cane be used anywhere sinatra can run with database access.
+Even though Herofu is designed for Heroku, it is nothing more than a rack-
+deployed sinatra app and cane be used anywhere sinatra can run with database
+access.
 
-For local deployments (e.g. development environment) the mysql driver is used and on heroku deployments ('production') the postgres driver is used.  Database tables are created automatically if they do not exist via an ActiveRecord Migration.  Files are stored using ActiveRecords :binary type which is a 'bytea' on postges or a 'BLOB' on mysql.
+For local deployments (e.g. development environment) the mysql driver is
+used and on heroku deployments ('production') the postgres driver is used.
+Database tables are created automatically if they do not exist via an
+ActiveRecord Migration.  Files are stored using ActiveRecord's :binary type
+which is a 'bytea' on postges or a 'BLOB' on mysql.
 
-Database configuration lives in config/database.yml should you want to change it.
+Database configuration lives in config/database.yml should you want to change
+it.
 
  ==============================
  = DEPLOYING HEROFU ON HEROKU =
  ==============================
 
-You'll need a git-clone of the code.  You will need:
+1) You'll need a git-clone of the code with a command like:
 
-	herofu/config.ru
-	herofu/herofu.rb
-	herofu/config/database.yml
+	"git clone git@github.com:xunker/herofu.git".
 	
-Edit herofu.rb and change the APPNAME, USERNAME and PASSWORD lines.  APPNAME will be the subdomain this will live under.	
+	That will create a new directory named 'herofu' with some files in it.
 	
-Get a Heroku account.  Get one at http://heroku.com/.
+2) Go to this new directory and edit herofu.rb.  Change the APPNAME, USERNAME
+	and PASSWORD lines.  APPNAME will be the subdomain this will live under.
 
-Install the Heroku gem installed on the machine you performed the git-clone on: "sudo gem install heroku".
+3) Commit those changes: 'git commit -a -m "initial config"'.
+	
+4) Get a Heroku account.  Get one at http://heroku.com/.
 
-Tell Heroku to make you a new app: "heroku create <APPNAME>" where APPNAME is the same as the APPNAME line in herofu.rb.
+5) Install the Heroku gem installed on the machine you performed the git-clone
+	on: "sudo gem install heroku".
 
-Deploy the app with git "git push heroku master".
+6) Tell Heroku to make you a new app: "heroku create <APPNAME>" where APPNAME
+	is the same as the APPNAME line in herofu.rb.
 
-Visit http://APPNAME.heroku.com/admin to see if it worked.
+7) Deploy the app with git "git push heroku master".
+
+PROFIT!!) Visit http://APPNAME.heroku.com/admin to see if it worked.
 
  ==========================================
  = USING HEROFU TO UPLOAD AND SERVE FILES =
  ==========================================
 
-Assuming the deployment worked, go to  http://APPNAME.heroku.com/admin and log in using the USERNAME and PASSWORD you set in herofu.rb.
+Assuming the deployment worked, go to  http://APPNAME.heroku.com/admin and
+log in using the USERNAME and PASSWORD you set in herofu.rb.
 
-You should see "0 files stored" as well as a form with a file selection box and a text box.  Click the 'browse' button on the file box and choose a file to upload.  Optionally, choose the location of this file in herofu with the other text box.  Click 'upload'
+You should see "0 files stored" as well as a form with a file selection box
+and a text box.  Click the 'browse' button on the file box and choose a file
+to upload.  Optionally, choose the location of this file in herofu with the
+other text box.  Click 'upload'
 
 The File should appear in the list below '1 files stored'.
 
-Clicking the filename link will take you to the file in question in a new window.  This file can now be seen by the world.
+Clicking the filename link will take you to the file in question in a new
+window.  This file can now be seen by the world.
 
  =============================
  = RENAMING AND MOVING FILES =
  =============================
 
-You can change where the file lives in the herofu app by clicking the 'edit' link next to a file.  In the next page, you can change the filename and path with the text box provided.  There are no real directories in herofu, so to place a file in a 'subdirectory' prefix the filename with '/dirname/".
+You can change where the file lives in the herofu app by clicking the 'edit'
+link next to a file.  In the next page, you can change the filename and path
+with the text box provided.  There are no real directories in herofu, so to
+place a file in a 'subdirectory' prefix the filename with '/dirname/".
 
  ==================
  = DELETING FILES =
@@ -67,4 +87,4 @@ More info at http://herofu.heroku.com/.
 
 Herofu is (C) 2009 by Matthew Nielsen, xunker@pyxidis.org
 
-Herofu is in no way condoned or affiliated with Heroku.com.  We just think they're cool.
+Herofu is in no way condoned or affiliated with Heroku.com.  We just like 'em.
