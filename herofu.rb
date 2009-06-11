@@ -13,7 +13,7 @@
 # CHANGE THESE!
 APPNAME='herofu' # also name of DB
 USERNAME='admin'
-PASSWORD='sh1sh2'
+PASSWORD='somepass'
 
 # EVERYTHING ELSE *SHOULD* BE FINE
 
