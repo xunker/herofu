@@ -1,3 +1,5 @@
+USERNAME='admin'
+PASSWORD='sh1sh2'
 
 %w[rubygems sinatra activerecord yaml erb].each { |r| require r }
 
@@ -22,7 +24,7 @@ def serve_file(filename)
 end
 
 def credentials_pass?
-  params['password'] == 'sh1sh2' && params['username'] = 'admin'
+  params['password'] == PASSWORD && params['username'] = USERNAME
 end
 
 def url_creds
@@ -41,7 +43,8 @@ end
 ActiveRecord::Base.establish_connection(use_main_app_database)
 
 get '/' do
-  serve_file('/index.html')
+  # serve_file('/index.html')
+  ENV.inspect
 end
 
 get '/admin/edit/:id' do
