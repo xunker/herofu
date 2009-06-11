@@ -3,22 +3,13 @@
  ============================================================================
 
 Herofu is a sinatra/rack app that is designed to be an easily deployed static
-file server for Heroku's zero-provisioning app hosting server.  Files are
+file server for Heroku's zero-provisioning app hosting service.  Files are
 stored in database and are served in expected URL formats like
 "http://appname.heroku.com/files/file.html".
 
 Even though Herofu is designed for Heroku, it is nothing more than a rack-
-deployed sinatra app and cane be used anywhere sinatra can run with database
+deployed sinatra app and can be used anywhere sinatra can run with database
 access.
-
-For local deployments (e.g. development environment) the mysql driver is
-used and on heroku deployments ('production') the postgres driver is used.
-Database tables are created automatically if they do not exist via an
-ActiveRecord Migration.  Files are stored using ActiveRecord's :binary type
-which is a 'bytea' on postges or a 'BLOB' on mysql.
-
-Database configuration lives in config/database.yml should you want to change
-it.
 
  ==============================
  = DEPLOYING HEROFU ON HEROKU =
@@ -83,7 +74,17 @@ On the main 'admin' page, click the 'delete' link next to a file.
  = MORE INFO =
  =============
 
-More info at http://herofu.heroku.com/.
+
+For local deployments (e.g. development environment) the mysql driver is
+used and on heroku deployments ('production') the postgres driver is used.
+Database tables are created automatically if they do not exist via an
+ActiveRecord Migration.  Files are stored using ActiveRecord's :binary type
+which is a 'bytea' on postges or a 'BLOB' on mysql.
+
+Database configuration lives in config/database.yml should you want to change
+it.  File storage and table creation has been tested with Mysql and Postgres.
+
+Home page at http://herofu.heroku.com/.  Code at http://github.com/xunker/herofu/
 
 Herofu is (C) 2009 by Matthew Nielsen, xunker@pyxidis.org
 
