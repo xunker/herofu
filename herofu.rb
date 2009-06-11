@@ -105,10 +105,13 @@ __END__
 @@ admin
 <div>
   <ul><%= @files.size %> files are stored.
+    <%- bytes_total = 0 %>
     <% @files.each do |file| %>
+      <%- bytes_total += file.content.size %>
     <li>
       <a href="<%= file.filename %>" target="_blank"><%= file.filename %></a> (<%= file.content.size > 1024 ? "#{(file.content.size/1024).to_i} kbytes" : "#{file.content.size} bytes" %>) --- <i><a href="/admin/edit/<%= file.id %>?<%= url_creds %>">edit</a></i> --- <i><a href="/admin/delete/<%= file.id %>?<%= url_creds %>">delete</a></i><br />
     </li>
+    <div><%= file.content.size > 1024 ? "#{(file.content.size/1024).to_i} kbytes" : "#{file.content.size} bytes" %> total</div>
     <% end %>
   </ul>
 </div>
