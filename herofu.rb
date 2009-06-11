@@ -9,7 +9,7 @@ end
 def use_main_app_database
   db = File.dirname(__FILE__) + "/config/database.yml"
   database_config = YAML.load(ERB.new(IO.read(db)).result)
-  env = ENV['VENDOR'] == 'apple' ? 'development' : 'production'
+  env = ENV['RAILS_ENV'] == 'production' ? 'production' : 'development'
   (database_config[env]).symbolize_keys
 end
 
@@ -43,8 +43,7 @@ end
 ActiveRecord::Base.establish_connection(use_main_app_database)
 
 get '/' do
-  # serve_file('/index.html')
-  ENV.inspect
+  serve_file('/index.html')
 end
 
 get '/admin/edit/:id' do
