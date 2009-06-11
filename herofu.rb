@@ -7,6 +7,23 @@ class StoredFile < ActiveRecord::Base
   validates_uniqueness_of :filename
 end
 
+class CreateStoredFiles < ActiveRecord::Migration
+  def self.up
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+    create_table :stored_files do |t|
+      t.column :filename, :string, :null => false
+      t.column :content, :longblob, :null => false
+      t.column :mine_type, :string
+      t.timestamps
+    end
+    add_index :stored_files, :filename, :unique => true
+  end
+
+  def self.down
+    drop_table :stored_files
+  end
+end
+
 def use_main_app_database
   db = File.dirname(__FILE__) + "/config/database.yml"
   database_config = YAML.load(ERB.new(IO.read(db)).result)
@@ -18,11 +35,12 @@ def check_database
   # check if our tabled are made; if not, make them
   begin
     file = StoredFile.find(:first)
-  rescue # broad rescue to account for mysql -> postgres disparities
+  rescue # rescue is overly broad to work on postgres (heroku) and local (mysql)
     # create the table
-    ActiveRecord::Base.connection.execute(
-      "CREATE TABLE stored_files (id INT NOT NULL auto_increment, filename varchar(255) NOT NULL, content longblob NOT NULL, mime_type varchar(32), created_at datetime, updated_at datetime, PRIMARY KEY (id), UNIQUE (filename));"
-    )
+    # ActiveRecord::Base.connection.execute(
+    #   "CREATE TABLE stored_files (id INT NOT NULL AUTO_INCREMENT, filename varchar(255) NOT NULL, content longblob NOT NULL, mime_type varchar(32), created_at datetime, updated_at datetime, PRIMARY KEY (id), UNIQUE (filename));"
+    # )
+    CreateStoredFiles.up
   end
 end
 
