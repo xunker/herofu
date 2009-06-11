@@ -64,7 +64,7 @@ end
 post '/admin' do
   if credentials_pass? && params[:uploaded_data].size > 0
     filename = params[:filename].size>0 ? params[:filename] : params[:uploaded_data][:filename]
-    filename = '/' + filename unless filename.split[0] == '/'
+    filename = '/' + filename unless filename.slice(0,1) == '/'
     StoredFile.create(
       :filename => filename,
       :content => params[:uploaded_data][:tempfile].read,
