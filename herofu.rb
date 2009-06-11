@@ -67,7 +67,12 @@ def serve_file(filename)
 end
 
 def credentials_pass?
-  params['password'] == PASSWORD && params['username'] = USERNAME
+  if params['password'] == PASSWORD && params['username'] = USERNAME
+    return true
+  else
+    sleep(5) # supa-dupa brute force protection!
+    return false
+  end
 end
 
 def url_creds
