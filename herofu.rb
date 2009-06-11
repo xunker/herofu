@@ -147,7 +147,7 @@ __END__
     <% @files.each do |file| %>
       <%- bytes_total += file.content.size %>
     <li>
-      <a href="<%= file.filename %>" target="_blank"><%= file.filename %></a> (<%= human_size(file.content.size) %>) --- <i><a href="/admin/edit/<%= file.id %>?<%= url_creds %>">edit</a></i> --- <i><a href="/admin/delete/<%= file.id %>?<%= url_creds %>">delete</a></i><br />
+      <a href="<%= file.filename %>" target="_blank"><%= file.filename %></a> (<%= human_size(file.content.size) %>) --- <i><a href="/admin/edit/<%= file.id %>?<%= url_creds %>">edit</a></i> --- <i><a href="/admin/delete/<%= file.id %>?<%= url_creds %>" onClick="confirm('Are you sure?');">delete</a></i><br />
     </li>
     <% end %>
   </ul>
