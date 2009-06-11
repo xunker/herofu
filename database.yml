@@ -1,0 +1,18 @@
+# common settings for each database
+common: &common
+  adapter: mysql
+  username: washout
+  password: 
+  host: localhost
+
+test:
+  <<: *common
+  database: herofu_test
+
+development:
+  <<: *common
+  database: herofu_development
+
+production:
+  <<: *common
+  database: herofu
