@@ -11,14 +11,36 @@ def use_main_app_database
   (database_config[env]).symbolize_keys
 end
 
+def serve_file(filename)
+  file = StoredFile.find_by_filename(filename)
+  if file.nil?
+    not_found "404 NOT FOUND"
+  else
+    content_type file.mime_type, :charset => 'utf-8'
+    file.content
+  end
+end
+
+def credentials_pass?
+  params['password'] == 'sh1sh2' && params['username'] = 'admin'
+end
+
+def url_creds
+  "username=#{params['username']}&password=#{params['password']}"
+end
+
+def post_creds
+  "<input type='hidden' name='username' value='#{params['username']}'><input type='hidden' name='password' value='#{params['password']}'>"
+end
+
 ActiveRecord::Base.establish_connection(use_main_app_database)
 
 get '/' do
- # look for a file called 'index.html'
+  serve_file('/index.html')
 end
 
 get '/admin' do
-  if params['password'] == 'sh1sh2' && params['username'] = 'admin'
+  if credentials_pass?
     @files = StoredFile.find(:all, :order => 'id')
     erb :admin, :layout => :admin_layout
   else
@@ -26,20 +48,34 @@ get '/admin' do
   end  
 end
 
+get '/admin/edit/:id' do
+  if credentials_pass?
+  end
+  redirect "/admin?#{url_creds}"
+end
+
+get '/admin/delete/:id' do
+  if credentials_pass? && StoredFile.exists?(:id => params[:id])
+    StoredFile.delete(StoredFile.find(params[:id]).id)
+  end
+  redirect "/admin?#{url_creds}"
+end
+
 post '/admin' do
-  if params['password'] == 'sh1sh2' && params['username'] = 'admin'
+  if credentials_pass?
+    filename = params[:filename].size>0 ? params[:filename] : params[:uploaded_data][:filename]
+    filename = '/' + filename unless filename[0] == '/'
     StoredFile.create(
-      :filename => params[:filename],
+      :filename => filename,
       :content => params[:uploaded_data][:tempfile].read,
       :mime_type => params[:uploaded_data][:type]
     )
-    redirect "/admin?password=#{params['password']}&username=#{params['username']}"
+    redirect "/admin?#{url_creds}"
   end
 end
 
 get "*" do |filename|
-  file = StoredFile.find_by_filename(filename)
-  file.content
+  serve_file(filename)
 end
 
 __END__
@@ -70,7 +106,9 @@ __END__
 <div>
   <ul><%= @files.size %> files are stored.
     <% @files.each do |file| %>
-    <li><%= file.filename %></li>
+    <li>
+      <a href="<%= file.filename %>" target="_blank"><%= file.filename %></a> --- <i><a href="/admin/edit/<%= file.id %>?<%= url_creds %>">edit</a></i> --- <i><a href="/admin/delete/<%= file.id %>?<%= url_creds %>">delete</a></i><br />
+    </li>
     <% end %>
   </ul>
 </div>
