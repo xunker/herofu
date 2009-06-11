@@ -4,6 +4,7 @@ PASSWORD='sh1sh2'
 %w[rubygems sinatra activerecord yaml erb].each { |r| require r }
 
 class StoredFile < ActiveRecord::Base
+  validates_uniqueness_of :filename
 end
 
 def use_main_app_database
@@ -11,6 +12,18 @@ def use_main_app_database
   database_config = YAML.load(ERB.new(IO.read(db)).result)
   env = ENV['RAILS_ENV'] == 'production' ? 'production' : 'development'
   (database_config[env]).symbolize_keys
+end
+
+def check_database
+  # check if our tabled are made; if not, make them
+  begin
+    file = StoredFile.find(:first)
+  rescue ActiveRecord::StatementInvalid
+    # create the table
+    ActiveRecord::Base.connection.execute(
+      "CREATE TABLE stored_files (id INT NOT NULL AUTO_INCREMENT, filename varchar(255) NOT NULL, content longblob NOT NULL, mime_type varchar(32), created_at datetime, updated_at datetime, PRIMARY KEY (id), UNIQUE (filename));"
+    )
+  end
 end
 
 def serve_file(filename)
@@ -41,6 +54,7 @@ def human_size(bytes)
 end
 
 ActiveRecord::Base.establish_connection(use_main_app_database)
+check_database
 
 get '/' do
   serve_file('/index.html')
