@@ -1,6 +1,6 @@
 # common settings for each database
 common: &common
-  adapter: postgres
+  adapter: mysql
   username: mnielsen
   password: 
   host: localhost
@@ -15,4 +15,5 @@ development:
 
 production:
   <<: *common
+  adapter: postgres
   database: herofu
