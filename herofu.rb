@@ -33,10 +33,43 @@ def post_creds
   "<input type='hidden' name='username' value='#{params['username']}'><input type='hidden' name='password' value='#{params['password']}'>"
 end
 
+def human_size(bytes)
+  bytes = bytes.to_i
+  bytes > 1024 ? "#{(bytes/1024).to_i} kbytes" : "#{bytes} bytes"
+end
+
 ActiveRecord::Base.establish_connection(use_main_app_database)
 
 get '/' do
   serve_file('/index.html')
+end
+
+get '/admin/edit/:id' do
+  if credentials_pass? && StoredFile.exists?(:id => params[:id])
+    @file = StoredFile.find(params[:id])
+    erb :admin_edit, :layout => :admin_layout
+  else
+    redirect "/admin?#{url_creds}"
+  end
+end
+
+post '/admin/edit/:id' do
+  if credentials_pass? && StoredFile.exists?(:id => params[:id])
+    @file = StoredFile.find(params[:id])
+    filename = params[:filename]
+    if filename.size > 0
+      filename = '/' + filename unless filename.slice(0,1) == '/'
+      @file.update_attributes(:filename => filename)
+    end
+  end
+  redirect "/admin/edit/#{params[:id]}?#{url_creds}"
+end
+
+get '/admin/delete/:id' do
+  if credentials_pass? && StoredFile.exists?(:id => params[:id])
+    StoredFile.delete(StoredFile.find(params[:id]).id)
+  end
+  redirect "/admin?#{url_creds}"
 end
 
 get '/admin' do
@@ -46,19 +79,6 @@ get '/admin' do
   else
     erb :admin_login, :layout => :admin_layout
   end  
-end
-
-get '/admin/edit/:id' do
-  if credentials_pass?
-  end
-  redirect "/admin?#{url_creds}"
-end
-
-get '/admin/delete/:id' do
-  if credentials_pass? && StoredFile.exists?(:id => params[:id])
-    StoredFile.delete(StoredFile.find(params[:id]).id)
-  end
-  redirect "/admin?#{url_creds}"
 end
 
 post '/admin' do
@@ -102,6 +122,24 @@ __END__
   <input type="submit" value="Login">
 </form>
 
+@@ admin_edit
+<div>
+  <div>
+    Filename: <%= @file.filename %><br />
+    File Size: <%= human_size(@file.content.size) %><br />
+    Uploaded: <%= @file.created_at %>
+  </div>
+  <div>
+    Change file name and path:
+    <form method="post">
+      <input type="text" name="filename" value="<%= @file.filename %>" size=50><br />
+      <input type="submit" value="Change">
+    </form>
+  </div>
+  <div>
+    <a href="/admin?<%= url_creds %>">&lt;&lt; back</a>
+  </div>
+</div>
 @@ admin
 <div>
   <ul><%= @files.size %> files are stored.
@@ -109,11 +147,11 @@ __END__
     <% @files.each do |file| %>
       <%- bytes_total += file.content.size %>
     <li>
-      <a href="<%= file.filename %>" target="_blank"><%= file.filename %></a> (<%= file.content.size > 1024 ? "#{(file.content.size/1024).to_i} kbytes" : "#{file.content.size} bytes" %>) --- <i><a href="/admin/edit/<%= file.id %>?<%= url_creds %>">edit</a></i> --- <i><a href="/admin/delete/<%= file.id %>?<%= url_creds %>">delete</a></i><br />
+      <a href="<%= file.filename %>" target="_blank"><%= file.filename %></a> (<%= human_size(file.content.size) %>) --- <i><a href="/admin/edit/<%= file.id %>?<%= url_creds %>">edit</a></i> --- <i><a href="/admin/delete/<%= file.id %>?<%= url_creds %>">delete</a></i><br />
     </li>
     <% end %>
   </ul>
-  <div><%= bytes_total > 1024 ? "#{(bytes_total/1024).to_i} kbytes" : "#{bytes_total} bytes" %> total</div>
+  <div><%= human_size(bytes_total) %> total</div>
 </div>
 <div style="margin-10px; border: 1px solid grey; padding:5px;">
   <div>Upload a file</div>
