@@ -115,7 +115,8 @@ __END__
   </ul>
   <div><%= bytes_total > 1024 ? "#{(bytes_total/1024).to_i} kbytes" : "#{bytes_total} bytes" %> total</div>
 </div>
-<div>
+<div style="margin-10px; border: 1px solid grey;">
+  <div>Upload a file</div>
   <form accept-charset="utf-8" enctype="multipart/form-data" method="post">
     <input type="file" name="uploaded_data"/><br />
     <br />
