@@ -15,4 +15,5 @@ development:
 
 production:
   <<: *common
+  adapter: postgres
   database: herofu
