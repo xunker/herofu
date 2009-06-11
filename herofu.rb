@@ -18,7 +18,7 @@ def check_database
   # check if our tabled are made; if not, make them
   begin
     file = StoredFile.find(:first)
-  rescue ActiveRecord::StatementInvalid
+  rescue # broad rescue to account for mysql -> postgres disparities
     # create the table
     ActiveRecord::Base.connection.execute(
       "CREATE TABLE stored_files (id INT NOT NULL AUTO_INCREMENT, filename varchar(255) NOT NULL, content longblob NOT NULL, mime_type varchar(32), created_at datetime, updated_at datetime, PRIMARY KEY (id), UNIQUE (filename));"
