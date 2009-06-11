@@ -7,7 +7,7 @@ end
 def use_main_app_database
   db = File.dirname(__FILE__) + "/config/database.yml"
   database_config = YAML.load(ERB.new(IO.read(db)).result)
-  env = "development"
+  # env = "development"
   (database_config[env]).symbolize_keys
 end
 
