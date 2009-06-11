@@ -41,7 +41,7 @@ end
 
 get '/admin' do
   if credentials_pass?
-    @files = StoredFile.find(:all, :order => 'id')
+    @files = StoredFile.find(:all, :order => 'filename')
     erb :admin, :layout => :admin_layout
   else
     erb :admin_login, :layout => :admin_layout
@@ -64,7 +64,7 @@ end
 post '/admin' do
   if credentials_pass?
     filename = params[:filename].size>0 ? params[:filename] : params[:uploaded_data][:filename]
-    filename = '/' + filename unless filename[0] == '/'
+    filename = '/' + filename unless filename.split[0] == '/'
     StoredFile.create(
       :filename => filename,
       :content => params[:uploaded_data][:tempfile].read,
@@ -114,9 +114,11 @@ __END__
 </div>
 <div>
   <form accept-charset="utf-8" enctype="multipart/form-data" method="post">
-    Filename (path included from /) where the file will be accessable on the web:<br />
-    <input type="text" name="filename"><br />
     <input type="file" name="uploaded_data"/><br />
+    <br />
+    Optional manual filename ("/full/path.ext") where the file will be accessable on the web:<br />
+    <input type="text" name="filename"><br />
+    <br />
     <input type="submit" value="Upload">
   </form>
 </div>
