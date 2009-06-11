@@ -15,15 +15,15 @@ PASSWORD='sh1sh2'
 DATABASE = {
   'development' => {
     :adapter => 'mysql',
-    :username => 'root',
-    :password => '',
+    :username => 'mnielsen',
+    :password => nil,
     :host => 'localhost',
     :database => 'herofu'
   },
   'production' => {
     :adapter => 'postgres',
-    :username => 'root',
-    :password => '',
+    :username => 'mnielsen',
+    :password => nil,
     :host => 'localhost',
     :database => 'herofu'
   }
@@ -39,7 +39,7 @@ end
 
 class CreateStoredFiles < ActiveRecord::Migration
   def self.up
-    ActiveRecord::Base.logger = Logger.new(STDOUT)
+    # ActiveRecord::Base.logger = Logger.new(STDOUT)
     create_table :stored_files do |t|
       t.column :filename, :string, :null => false
       t.column :content, :binary, :null => false
