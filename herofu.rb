@@ -5,7 +5,7 @@ class StoredFile < ActiveRecord::Base
 end
 
 def use_main_app_database
-  db = File.dirname(__FILE__) + "/config/database.yml"
+  db = File.dirname(__FILE__) + "/database.yml"
   database_config = YAML.load(ERB.new(IO.read(db)).result)
   env = ENV['VENDOR'] == 'apple' ? 'development' : 'production'
   (database_config[env]).symbolize_keys
