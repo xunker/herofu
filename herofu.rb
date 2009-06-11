@@ -113,7 +113,7 @@ __END__
     </li>
     <% end %>
   </ul>
-  <div><%= file.content.size > 1024 ? "#{(file.content.size/1024).to_i} kbytes" : "#{file.content.size} bytes" %> total</div>
+  <div><%= bytes_total > 1024 ? "#{(bytes_total/1024).to_i} kbytes" : "#{bytes_total} bytes" %> total</div>
 </div>
 <div>
   <form accept-charset="utf-8" enctype="multipart/form-data" method="post">
