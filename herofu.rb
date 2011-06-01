@@ -17,7 +17,7 @@ PASSWORD='changeme'
 
 # EVERYTHING ELSE *SHOULD* BE FINE
 
-%w[rubygems sinatra activerecord yaml erb].each { |r| require r }
+%w[rubygems sinatra active_record yaml erb].each { |r| require r }
 
 class StoredFile < ActiveRecord::Base
   validates_uniqueness_of :filename
