@@ -7,7 +7,7 @@
   --------------------------------------------------------------------------
 
  ============================================================================
- = Herofu - a simple file server made for Heroku - http://herofu.heroku.com =
+ = Herofu - a simple file server made for Heroku - github.com/xunker/herofu =
  ============================================================================
 
 Herofu is a sinatra/rack app that is designed to be an easily deployed static
