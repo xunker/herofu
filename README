@@ -1,3 +1,11 @@
+  --DEPRECATED--DEPRECATED--DEPRECATED--DEPRECATED--DEPRECATED--DEPRECATED--
+  --                                                                      --
+  -- This project relied on the Aspen stack. Heroku has EoL'd that stack  --
+  -- effective Nov. 26 2012. This project will not be updated to newer    --
+  -- stacks. Left here for historical purposes.                           --
+  --                                                                      --
+  --------------------------------------------------------------------------
+
  ============================================================================
  = Herofu - a simple file server made for Heroku - http://herofu.heroku.com =
  ============================================================================
@@ -18,14 +26,14 @@ access.
 1) You'll need a git-clone of the code with a command like:
 
 	"git clone git@github.com:xunker/herofu.git".
-	
+
 	That will create a new directory named 'herofu' with some files in it.
-	
+
 2) Go to this new directory and edit herofu.rb.  Change the APPNAME, USERNAME
 	and PASSWORD lines.  APPNAME will be the subdomain this will live under.
 
 3) Commit those changes: 'git commit -a -m "initial config"'.
-	
+
 4) Get a Heroku account.  Get one at http://heroku.com/.
 
 5) Install the Heroku gem installed on the machine you performed the git-clone
